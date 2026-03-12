@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyline Travel</title>
+    <link rel="icon" href="Head.png" sizes="any">
+    <style>
+        body {
+            background-color: rgb(0, 240, 255);
+        }
+
+        .Separatori {
+            border: rgb(0, 183, 255) 3px solid;
+            border-radius: 50%;
+            width: 90%;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .tit_box {
+            border-radius: 20px;
+            height: 20%;
+            width: 100%;
+            display: flex;
+            background-color: rgb(56, 130, 196);
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .tit_img {
+            height: 9%;
+            width: 9%;
+            border-radius: 50%;
+            padding-left: 5px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+
+        .tit {
+            font-size: 60px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: rgb(158, 210, 255);
+            padding-left: 7%;
+            padding-top: 0.25%;
+        }
+
+        .nav_box {
+            padding-top: 1%;
+            padding-right: 5%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin: 0;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a,
+        .dropdown-btn {
+            padding: 15px 15px 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover,
+        .dropdown-btn:hover {
+            color: #f1f1f1;
+            background-color: #333;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 20px;
+            font-size: 36px;
+            margin-left: 50px;
+            width: auto;
+            padding: 10px;
+            background-color: transparent;
+        }
+
+        .dropdown-container {
+            display: none;
+            background-color: #262626;
+            padding-left: 15px;
+        }
+
+        .open-btn {
+            font-size: 35px;
+            cursor: pointer;
+            background-color: transparent;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            outline: none;
+        }
+
+        .open-btn:hover {
+            color: rgb(0, 240, 255);
+        }
+
+        .travel-settings-bar {
+            position: fixed;
+            right: 0;
+            top: 270px;
+            transform: translateY(-50%);
+            background: white;
+            border: 2px solid rgb(12, 93, 163);
+            border-right: none;
+            border-radius: 15px 0 0 15px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 50px;
+        }
+
+        .icon {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            transition: transform 0.2s;
+        }
+
+        select {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            color: #333;
+            background: #f9f9f9;
+            cursor: pointer;
+            outline: none;
+            padding: 2px;
+        }
+
+        select:hover {
+            border-color: rgb(12, 93, 163);
+        }
+
+        .lang-en,
+        .lang-fr {
+            display: none;
+        }
+
+        .Main_box {
+            background-color: rgb(56, 130, 196);
+            border-radius: 20px;
+            padding-top: 5px;
+        }
+
+        .tit_planner {
+            font-size: 45px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+        }
+
+        .travel-planner {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .search-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-box input,
+        .search-box select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            background: #e0f2f1;
+            color: #00796b;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .topluog_box {
+            width: 100%;
+        }
+
+        .topluog_boxes {
+            width: 100%;
+            display: flex;
+        }
+
+        .tit_topluog {
+            font-size: 45px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .topluog {
+            margin-left: 2.5%;
+            width: 30%;
+            border-radius: 10px;
+            background-color: rgb(205, 205, 255);
+        }
+
+        .title-city {
+            color: rgb(10, 10, 10);
+            font-family: Verdana, sans-serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .title-category {
+            color: rgb(10, 10, 10);
+            font-family: Verdana, sans-serif;
+            font-size: 17px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .list-activities {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .item-activity {
+            color: rgb(10, 10, 10);
+            font-family: Verdana, sans-serif;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .container-list {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .tit_Mete {
+            font-size: 45px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+
+
+
+
+
+
+
+
+        .city-block {
+            width: 100%;
+            border-bottom: 8px solid #f0f0f0;
+            padding-bottom: 30px;
+        }
+
+        .city-header {
+            background-color: rgb(0, 183, 255);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            margin: 0;
+            font-size: 35px;
+        }
+
+        .people-category {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .category-title {
+            background-color: rgb(0, 240, 255);
+            padding: 20px 40px;
+            margin: 20px 0 10px 0;
+            border-left: 10px solid #3498db;
+            font-size: 19px;
+            color: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .activity-item {
+            padding: 10px 40px;
+            border-bottom: 1px solid #f1f1f1;
+            display: flex;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            align-items: flex-start;
+            transition: background 0.3s;
+            line-height: 1.6;
+            color: white;
+        }
+
+        .activity-item:hover {
+            background-color: #dfe9ff;
+            color: black;
+        }
+
+        .activity-item::before {
+            content: "•";
+            margin-right: 20px;
+            color: #004574;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .time-slot {
+            font-weight: bold;
+            color: #000000;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .city-header {
+                font-size: 1.8rem;
+                padding: 30px 15px;
+            }
+
+            .category-title {
+                font-size: 1.2rem;
+                padding: 15px 20px;
+            }
+
+            .activity-item {
+                padding: 15px 20px;
+            }
+        }
+
+        .a_go{
+            text-decoration: none;
+            color: black;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 2px;
+            border-radius: 20px;
+            background-color: rgb(0, 183, 255);
+        }
+
+
+
+
+
+
+
+
+
+
+        .futer {
+            background-color: rgb(56, 130, 196);
+            border-radius: 20px;
+            height: 30%;
+            width: 100%;
+            display: flex;
+        }
+
+        .authors {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            color: rgb(158, 210, 255);
+            padding-left: 3%;
+            width: 20%;
+        }
+
+        .mails {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            color: white;
+            padding-left: 3%;
+            width: 30%;
+        }
+
+        .mails a {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .numbs {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            color: white;
+            padding-left: 3%;
+            width: 20%;
+        }
+
+        .fut_img {
+            height: 9%;
+            width: 9%;
+            border-radius: 50%;
+            padding-left: 5px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            margin-left: 10%;
+            margin-top: 10px;
+        }
+    </style>
+    <script>window.aichatbotApiKey="1d6b2e74-4a70-424a-a0fb-6594e2f77a9d"; window.aichatbotProviderId="f9e9c5e4-6d1a-4b8c-8d3f-3f9e9c5e46d1";</script><script src="https://script.chatlab.com/aichatbot.js" id="1d6b2e74-4a70-424a-a0fb-6594e2f77a9d" defer></script>
+    <script>
+        function updateSettings(type) {
+            const langSelect = document.getElementById('lang-select');
+            const currSelect = document.getElementById('curr-select');
+            const tempSelect = document.getElementById('temp-select');
+            const lang = langSelect.value;
+            const selectedLangOption = langSelect.options[langSelect.selectedIndex];
+            document.getElementById('lang-icon').innerText = selectedLangOption.getAttribute('data-flag');
+            document.getElementById('curr-icon').innerText = currSelect.value;
+            document.getElementById('temp-icon').innerText = tempSelect.value;
+            const allLangs = ['it', 'en', 'fr'];
+            allLangs.forEach(l => {
+                const elements = document.getElementsByClassName('lang-' + l);
+                for (let el of elements) {
+                    el.style.display = (l === lang) ? 'inline-block' : 'none';
+                }
+            });
+            const allOptions = document.querySelectorAll('option[data-' + lang + ']');
+            allOptions.forEach(opt => {
+                opt.innerText = opt.getAttribute('data-' + lang);
+            });
+            const destInput = document.getElementById('destinationInput');
+            const peopleInput = document.getElementById('peopleInput');
+            const placeholders = {
+                it: { dest: "Dove vuoi andare?", peop: "Quante persone?" },
+                en: { dest: "Where do you want to go?", peop: "How many people?" },
+                fr: { dest: "Où voulez vous aller?", peop: "Combien de personnes?" }
+            };
+            destInput.placeholder = placeholders[lang].dest;
+            peopleInput.placeholder = placeholders[lang].peop;
+            const targetIcon = document.getElementById(type + '-icon');
+            if (targetIcon) {
+                targetIcon.style.transform = 'scale(1.3)';
+                setTimeout(() => targetIcon.style.transform = 'scale(1)', 200);
+            }
+        }
+        // Luoghi e attività database
+        const myDatabase = [
+            // 1) PARIGI
+            {
+                luogo: "parigi",
+                target: "adulti",
+                tipo: "romantic",
+                pag_sit: "parigi-marito-moglie",
+                it: { nome: "Parigi", desc: "Sette giorni tra arte, icone senza tempo e atmosfere magiche: Parigi ti aspetta per un viaggio indimenticabile." },
+                en: { nome: "Paris", desc: "Seven days of art, timeless icons, and magical atmospheres: Paris awaits you for an unforgettable journey." },
+                fr: { nome: "Paris", desc: "Sept jours d'art, d'icônes intemporelles et d'atmosphères magiques : Paris vous attend pour un voyage inoubliable." }
+            },
+            {
+                luogo: "parigi",
+                target: "famiglia",
+                tipo: "family",
+                pag_sit: "parigi-famiglia",
+                it: { nome: "Parigi", desc: "Un viaggio perfetto per la famiglia, tra la salita obbligatoria sulla Torre Eiffel, la magia pura di Disneyland Paris e un'immersione nella natura al Parco Zoologico." },
+                en: { nome: "Paris", desc: "A perfect trip for the family, including the mandatory climb up the Eiffel Tower, the pure magic of Disneyland Paris, and an immersion in nature at the Zoological Park." },
+                fr: { nome: "Paris", desc: "Un voyage parfait pour la famille, incluant la montée obligatoire sur la Tour Eiffel, la magie pure de Disneyland Paris et une immersion dans la nature au Parc Zoologique." }
+            },
+            {
+                luogo: "parigi",
+                target: "giovani",
+                tipo: "fun",
+                pag_sit: "parigi-20enni",
+                it: { nome: "Parigi", desc: "Un'esperienza tra le foto di rito al Trocadéro, la magia adrenalinica di Disneyland e le affascinanti esplorazioni dark delle Catacombe." },
+                en: { nome: "Paris", desc: "An experience between ritual photos at the Trocadéro, the adrenaline-pumping magic of Disneyland, and fascinating dark explorations of the Catacombs." },
+                fr: { nome: "Paris", desc: "Une expérience entre les photos rituelles au Trocadéro, la magie pleine d'adrénaline de Disneyland et les fascinantes explorations sombres des Catacombes." }
+            },
+
+            // 2) BARCELLONA
+            {
+                luogo: "barcellona",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Barcellona", desc: "Iniziate con il simbolo assoluto della Sagrada Familia, per poi immergervi nel modernismo catalano del Parc Güell e nella forza del Teatro Flamenco." },
+                en: { nome: "Barcelona", desc: "Start with the absolute symbol of the Sagrada Familia, then immerse yourself in the Catalan modernism of Parc Güell and the power of the Flamenco Theater." },
+                fr: { nome: "Barcelone", desc: "Commencez par le symbole absolu de la Sagrada Familia, puis plongez dans le modernisme catalan du Parc Güell et la puissance du Théâtre Flamenco." }
+            },
+            {
+                luogo: "barcellona",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Barcellona", desc: "Un inizio rilassante con gli squali dell'Acquario, tanta creatività nel Parco Güell e giostre storiche al Tibidabo." },
+                en: { nome: "Barcelona", desc: "A relaxing start with the sharks at the Aquarium, lots of creativity in Parc Güell, and historic rides at Tibidabo." },
+                fr: { nome: "Barcelone", desc: "Un début relaxant avec les requins de l'Aquarium, beaucoup de créativité au Parc Güell et des manèges historiques au Tibidabo." }
+            },
+            {
+                luogo: "barcellona",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Barcellona", desc: "Crociere in catamarano al tramonto, la tecnologia immersiva del Barça e l'esplosione di energia del flamenco dal vivo." },
+                en: { nome: "Barcelona", desc: "Catamaran cruises at sunset, immersive Barça technology, and the explosion of energy of live flamenco." },
+                fr: { nome: "Barcelone", desc: "Croisières en catamaran au coucher du soleil, la technologie immersive du Barça et l'explosion d'énergie du flamenco en direct." }
+            },
+
+            // 3) PRAGA
+            {
+                luogo: "praga",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Praga", desc: "Un inizio suggestivo nella Città Vecchia, una giornata dedicata al Castello e relax termale alla Bernard Beer Spa." },
+                en: { nome: "Prague", desc: "A charming start in the Old Town, a day dedicated to the Castle, and thermal relaxation at the Bernard Beer Spa." },
+                fr: { nome: "Prague", desc: "Un début charmant dans la Vieille Ville, une journée consacrée au Château et une détente thermale au Bernard Beer Spa." }
+            },
+            {
+                luogo: "praga",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Praga", desc: "La magia dell'Orologio Astronomico, una giornata meravigliosa allo Zoo di Praga e la dolcezza della torta a camino." },
+                en: { nome: "Prague", desc: "The magic of the Astronomical Clock, a wonderful day at the Prague Zoo, and the sweetness of the chimney cake." },
+                fr: { nome: "Prague", desc: "La magie de l'Horloge Astronomique, une merveilleuse journée au Zoo de Prague et la douceur du gâteau cheminée." }
+            },
+            {
+                luogo: "praga",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Praga", desc: "Sorseggia un drink a -7°C nell'Ice Pub, scopri la storia interattiva della Pilsner Urquell e goditi i club lungo la Moldava." },
+                en: { nome: "Prague", desc: "Sip a drink at -7°C in the Ice Pub, discover the interactive history of Pilsner Urquell, and enjoy the clubs along the Vltava River." },
+                fr: { nome: "Prague", desc: "Sirotez un verre à -7°C à l'Ice Pub, découvrez l'histoire interactive de la Pilsner Urquell et profitez des clubs le long de la rivière Vltava." }
+            },
+
+            // 4) BUDAPEST
+            {
+                luogo: "budapest",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Budapest", desc: "Scopri la maestosità del Parlamento, scatta foto mozzafiato al Bastione dei Pescatori e rigenerati nelle calde acque delle Terme." },
+                en: { nome: "Budapest", desc: "Discover the majesty of the Parliament, take breathtaking photos at the Fisherman's Bastion, and rejuvenate in the warm waters of the Thermal Baths." },
+                fr: { nome: "Budapest", desc: "Découvrez la majesté du Parlement, prenez des photos à couper le souffle au Bastion des Pêcheurs et ressourcez-vous dans les eaux chaudes des Thermes." }
+            },
+            {
+                luogo: "budapest",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Budapest", desc: "Ammirate la corona reale al Parlamento, scoprite i mondi digitali del Cinema Mystica e divertitevi lanciando vernice allo Splashing Tour." },
+                en: { nome: "Budapest", desc: "Admire the royal crown at the Parliament, discover the digital worlds of Cinema Mystica, and have fun throwing paint at the Splashing Tour." },
+                fr: { nome: "Budapest", desc: "Admirez la couronne royale au Parlement, découvrez les mondes numériques du Cinema Mystica et amusez-vous à lancer de la peinture au Splashing Tour." }
+            },
+            {
+                luogo: "budapest",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Budapest", desc: "Installazioni digitali mozzafiato, tour nei pub più nascosti e discoteche acquatiche giganti alle terme." },
+                en: { nome: "Budapest", desc: "Breathtaking digital installations, tours of the most hidden pubs, and giant aquatic nightclubs at the thermal baths." },
+                fr: { nome: "Budapest", desc: "Installations numériques époustouflantes, visites des pubs les plus cachés et boîtes de nuit aquatiques géantes aux thermes." }
+            },
+
+            // 5) CRETA
+            {
+                luogo: "creta",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Creta", desc: "Esplora il leggendario palazzo di Cnosso, vivi l'escursione iconica a Santorini e naviga in catamarano nel mare cristallino." },
+                en: { nome: "Crete", desc: "Explore the legendary palace of Knossos, experience the iconic excursion to Santorini, and sail by catamaran in the crystal-clear sea." },
+                fr: { nome: "Crète", desc: "Explorez le palais légendaire de Cnossos, vivez l'excursion emblématique à Santorin et naviguez en catamaran dans la mer cristalline." }
+            },
+            {
+                luogo: "creta",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Creta", desc: "I bambini rimarranno incantati dall'Acquario, si divertiranno sulla Barca dei Pirati e giocheranno nelle acque sicure della Spiaggia Rosa." },
+                en: { nome: "Crete", desc: "Children will be enchanted by the Aquarium, have fun on the Pirate Boat, and play in the safe waters of the Pink Beach." },
+                fr: { nome: "Crète", desc: "Les enfants seront enchantés par l'Aquarium, s'amuseront sur le Bateau Pirate et joueront dans les eaux sûres de la Plage Rose." }
+            },
+            {
+                luogo: "creta",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Creta", desc: "Trekking spettacolari nelle Gole di Samaria, feste in barca pazzesche a Malia e safari in quad nella natura selvaggia." },
+                en: { nome: "Crete", desc: "Spectacular trekking in the Samaria Gorge, crazy boat parties in Malia, and quad safaris in the wild nature." },
+                fr: { nome: "Crète", desc: "Trekking spectaculaire dans les Gorges de Samaria, fêtes incroyables en bateau à Malia et safaris en quad dans la nature sauvage." }
+            },
+
+            // 6) VIENNA
+            {
+                luogo: "vienna",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Vienna", desc: "Scoprite l'argenteria di corte e la storia di Sisi, ammirate i capolavori dell'arte e ascoltate la musica classica al Musikverein." },
+                en: { nome: "Vienna", desc: "Discover the court silver and the story of Sisi, admire the masterpieces of art, and listen to classical music at the Musikverein." },
+                fr: { nome: "Vienne", desc: "Découvrez l'argenterie de la cour et l'histoire de Sissi, admirez les chefs-d'œuvre de l'art et écoutez de la musique classique au Musikverein." }
+            },
+            {
+                luogo: "vienna",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Vienna", desc: "Ologrammi e stanze che sfidano la gravità, la sala dei dinosauri al Museo di Storia Naturale e giostre divertenti al Prater." },
+                en: { nome: "Vienna", desc: "Holograms and gravity-defying rooms, the dinosaur hall at the Natural History Museum, and fun rides at the Prater." },
+                fr: { nome: "Vienne", desc: "Des hologrammes et des pièces défiant la gravité, la salle des dinosaures au Musée d'Histoire Naturelle et des manèges amusants au Prater." }
+            },
+            {
+                luogo: "vienna",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Vienna", desc: "Vivi l'esperienza tech e sensoriale di Mozart, goditi il Pub Crawl e ammira i video-mapping mozzafiato nelle chiese gotiche." },
+                en: { nome: "Vienna", desc: "Live the tech and sensory experience of Mozart, enjoy the Pub Crawl, and admire the breathtaking video-mapping in Gothic churches." },
+                fr: { nome: "Vienne", desc: "Vivez l'expérience technologique et sensorielle de Mozart, profitez du Pub Crawl et admirez le mapping vidéo époustouflant dans les églises gothiques." }
+            },
+
+            // 7) LISBONA
+            {
+                luogo: "lisbona",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Lisbona", desc: "Passeggiate nel Castello di São Jorge, ammirate i capolavori del Monastero de Jerónimos ed emozionatevi con il Fado autentico." },
+                en: { nome: "Lisbon", desc: "Stroll through the Castle of São Jorge, admire the masterpieces of the Jerónimos Monastery, and be moved by authentic Fado." },
+                fr: { nome: "Lisbonne", desc: "Promenez-vous dans le château de São Jorge, admirez les chefs-d'œuvre du monastère des Hiéronymites et laissez-vous émouvoir par le Fado authentique." }
+            },
+            {
+                luogo: "lisbona",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Lisbona", desc: "Visitate il magnifico Oceanario, scattate foto impossibili al museo 3D ed esplorate lo stadio del Benfica." },
+                en: { nome: "Lisbon", desc: "Visit the magnificent Oceanarium, take impossible photos at the 3D museum, and explore the Benfica stadium." },
+                fr: { nome: "Lisbonne", desc: "Visitez le magnifique Océanarium, prenez des photos impossibles au musée 3D et explorez le stade de Benfica." }
+            },
+            {
+                luogo: "lisbona",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Lisbona", desc: "Gira la città in Tuk-Tuk, affronta le onde con una lezione di surf e trasforma il fiume in una pista da ballo notturna." },
+                en: { nome: "Lisbon", desc: "Tour the city in a Tuk-Tuk, ride the waves with a surf lesson, and turn the river into a night dance floor." },
+                fr: { nome: "Lisbonne", desc: "Parcourez la ville en Tuk-Tuk, affrontez les vagues avec un cours de surf et transformez le fleuve en piste de danse nocturne." }
+            },
+
+            // 8) VALENCIA
+            {
+                luogo: "valencia",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Valencia", desc: "Lasciati senza fiato dagli affreschi della Basilica, cammina sotto i tunnel dell'Oceanogràfic e nuota nel fiume Mijares a Montanejos." },
+                en: { nome: "Valencia", desc: "Let yourself be left breathless by the frescoes of the Basilica, walk beneath the tunnels of the Oceanogràfic, and swim in the Mijares river in Montanejos." },
+                fr: { nome: "Valence", desc: "Laissez-vous couper le souffle par les fresques de la Basilique, marchez sous les tunnels de l'Oceanogràfic et nagez dans la rivière Mijares à Montanejos." }
+            },
+            {
+                luogo: "valencia",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Valencia", desc: "Sfreccia in Tuk-Tuk, scopri i segreti della festa del fuoco delle Fallas e lanciati nelle acque gelide delle cascate dell'Algar." },
+                en: { nome: "Valencia", desc: "Zip around in a Tuk-Tuk, discover the secrets of the Fallas fire festival, and plunge into the freezing waters of the Algar waterfalls." },
+                fr: { nome: "Valence", desc: "Foncez en Tuk-Tuk, découvrez les secrets de la fête du feu des Fallas et plongez dans les eaux glaciales des cascades de l'Algar." }
+            },
+
+            // 9) LONDRA
+            {
+                luogo: "londra",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Londra", desc: "Ammirate la gotica Abbazia di Westminster, i tesori mondiali del British Museum e la residenza reale abitata più antica al mondo." },
+                en: { nome: "London", desc: "Admire the Gothic Westminster Abbey, the world treasures of the British Museum, and the oldest inhabited royal residence in the world." },
+                fr: { nome: "Londres", desc: "Admirez l'Abbaye gothique de Westminster, les trésors mondiaux du British Museum et la plus ancienne résidence royale habitée au monde." }
+            },
+            {
+                luogo: "londra",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Londra", desc: "Godetevi la vista dal London Eye, esplorate il magico mondo dell'orso Paddington e lasciatevi incantare dalle musiche de Il Re Leone." },
+                en: { nome: "London", desc: "Enjoy the view from the London Eye, explore the magical world of Paddington Bear, and be enchanted by the music of The Lion King." },
+                fr: { nome: "Londres", desc: "Profitez de la vue depuis le London Eye, explorez le monde magique de l'ours Paddington et laissez-vous enchanter par la musique du Roi Lion." }
+            },
+            {
+                luogo: "londra",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Londra", desc: "Cena tra le leggende del rock, esplora i veri set di Harry Potter e perditi nei locali della zona hipster di Shoreditch." },
+                en: { nome: "London", desc: "Dine among rock legends, explore the real Harry Potter sets, and lose yourself in the clubs of the hipster area of Shoreditch." },
+                fr: { nome: "Londres", desc: "Dînez parmi les légendes du rock, explorez les vrais décors d'Harry Potter et perdez-vous dans les clubs du quartier branché de Shoreditch." }
+            },
+
+            // 10) SICILIA
+            {
+                luogo: "sicilia",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Sicilia", desc: "Scopri le cantine storiche di Marsala, tuffati nelle acque turchesi delle Egadi e passeggia tra i giganti della Valle dei Templi." },
+                en: { nome: "Sicily", desc: "Discover the historic cellars of Marsala, dive into the turquoise waters of the Egadi islands, and stroll among the giants of the Valley of the Temples." },
+                fr: { nome: "Sicile", desc: "Découvrez les caves historiques de Marsala, plongez dans les eaux turquoise des îles Égades et promenez-vous parmi les géants de la Vallée des Temples." }
+            },
+            {
+                luogo: "sicilia",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Sicilia", desc: "Fai amicizia con i dinosauri del Bioparco, naviga tra le isole e affascinati con il tradizionale spettacolo dei Pupi." },
+                en: { nome: "Sicily", desc: "Make friends with the dinosaurs at the Biopark, sail around the islands, and be fascinated by the traditional Puppet show." },
+                fr: { nome: "Sicile", desc: "Faites-vous des amis avec les dinosaures du Bioparc, naviguez autour des îles et laissez-vous fasciner par le spectacle traditionnel des Marionnettes." }
+            },
+            {
+                luogo: "sicilia",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Sicilia", desc: "Street food scatenato alla Vucciria, bagni di sale al tramonto a Marsala e avventure estreme in quad sull'Etna." },
+                en: { nome: "Sicily", desc: "Wild street food at the Vucciria, sunset salt baths in Marsala, and extreme quad adventures on Mount Etna." },
+                fr: { nome: "Sicile", desc: "Street food déchaîné à la Vucciria, bains de sel au coucher du soleil à Marsala et aventures extrêmes en quad sur l'Etna." }
+            },
+
+            // 11) ISTANBUL
+            {
+                luogo: "istanbul",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Istanbul", desc: "Ammirate l'immensa cupola di Santa Sofia, rilassatevi in un hamam imperiale e godetevi una romantica crociera sul Bosforo." },
+                en: { nome: "Istanbul", desc: "Admire the immense dome of Hagia Sophia, relax in an imperial hamam, and enjoy a romantic cruise on the Bosphorus." },
+                fr: { nome: "Istanbul", desc: "Admirez l'immense dôme de Sainte-Sophie, détendez-vous dans un hammam impérial et profitez d'une croisière romantique sur le Bosphore." }
+            },
+            {
+                luogo: "istanbul",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Istanbul", desc: "Divertitevi con la stanza ruotata delle illusioni, create la vostra lampada colorata a mosaico e scatenatevi sulle montagne russe di Vialand." },
+                en: { nome: "Istanbul", desc: "Have fun with the rotated illusion room, create your own colorful mosaic lamp, and go wild on the Vialand roller coasters." },
+                fr: { nome: "Istanbul", desc: "Amusez-vous avec la pièce des illusions inversée, créez votre propre lampe mosaïque colorée et éclatez-vous sur les montagnes russes de Vialand." }
+            },
+            {
+                luogo: "istanbul",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Istanbul", desc: "Scendi nel palazzo sommerso della Cisterna, scatta foto da star con abiti svolazzanti e vivi la magia della danza dei Dervisci." },
+                en: { nome: "Istanbul", desc: "Descend into the sunken palace of the Cistern, take star photos with flowing dresses, and experience the magic of the Whirling Dervishes' dance." },
+                fr: { nome: "Istanbul", desc: "Descendez dans le palais englouti de la Citerne, prenez des photos de star avec des robes fluides et vivez la magie de la danse des Derviches." }
+            },
+
+            // 12) AMSTERDAM
+            {
+                luogo: "amsterdam",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Amsterdam", desc: "Scivolate sui canali ammirando le case del XVII secolo, scoprite l'anima di Van Gogh e perdetevi tra milioni di tulipani al Keukenhof." },
+                en: { nome: "Amsterdam", desc: "Glide along the canals admiring the 17th-century houses, discover the soul of Van Gogh, and lose yourself among millions of tulips at Keukenhof." },
+                fr: { nome: "Amsterdam", desc: "Glissez sur les canaux en admirant les maisons du XVIIe siècle, découvrez l'âme de Van Gogh et perdez-vous parmi des millions de tulipes au Keukenhof." }
+            },
+            {
+                luogo: "amsterdam",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Amsterdam", desc: "Camminate sul soffitto all'Upside Down Experience, entrate nella colorata casa di Barbie e divertitevi al museo della scienza NEMO." },
+                en: { nome: "Amsterdam", desc: "Walk on the ceiling at the Upside Down Experience, enter Barbie's colorful house, and have fun at the NEMO science museum." },
+                fr: { nome: "Amsterdam", desc: "Marchez au plafond à l'Upside Down Experience, entrez dans la maison colorée de Barbie et amusez-vous au musée des sciences NEMO." }
+            },
+            {
+                luogo: "amsterdam",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Amsterdam", desc: "Vola sopra l'Olanda in 5D, vivi la storia interattiva della birra Heineken ed esplora l'arte luminosa di Banksy." },
+                en: { nome: "Amsterdam", desc: "Fly over Holland in 5D, experience the interactive history of Heineken beer, and explore Banksy's luminous art." },
+                fr: { nome: "Amsterdam", desc: "Survolez la Hollande en 5D, vivez l'histoire interactive de la bière Heineken et explorez l'art lumineux de Banksy." }
+            },
+
+            // 13) ROMA
+            {
+                luogo: "roma",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Roma", desc: "Passeggiate tra gli archi millenari del Colosseo, salite sulla maestosa Cupola di San Pietro ed esplorate i capolavori del Bernini." },
+                en: { nome: "Rome", desc: "Stroll through the millennial arches of the Colosseum, climb the majestic Dome of St. Peter's, and explore Bernini's masterpieces." },
+                fr: { nome: "Rome", desc: "Promenez-vous à travers les arches millénaires du Colisée, montez sur le majestueux Dôme de Saint-Pierre et explorez les chefs-d'œuvre du Bernin." }
+            },
+            {
+                luogo: "roma",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Roma", desc: "Correte liberi nell'immenso Circo Massimo, trascorrete la mattina tra tigri e leoni e divertitevi lanciando colori nell'action painting." },
+                en: { nome: "Rome", desc: "Run free in the immense Circus Maximus, spend the morning among tigers and lions, and have fun throwing colors in action painting." },
+                fr: { nome: "Rome", desc: "Courez en toute liberté dans l'immense Cirque Maxime, passez la matinée parmi les tigres et les lions et amusez-vous à lancer des couleurs lors de l'action painting." }
+            },
+            {
+                luogo: "roma",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Roma", desc: "Scoprite i sapori dello street food a Trastevere, ammirate il panorama mozzafiato dal Vittoriano e perdetevi nei bar universitari di San Lorenzo." },
+                en: { nome: "Rome", desc: "Discover the flavors of street food in Trastevere, admire the breathtaking panorama from the Vittoriano, and lose yourself in the university bars of San Lorenzo." },
+                fr: { nome: "Rome", desc: "Découvrez les saveurs de la street food au Trastevere, admirez le panorama époustouflant depuis le Vittoriano et perdez-vous dans les bars étudiants de San Lorenzo." }
+            },
+
+            // 14) MONACO DI BAVIERA
+            {
+                luogo: "monaco",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Monaco di Baviera", desc: "Scoprite il carillon del Municipio in Marienplatz, rilassatevi nelle prestigiose Terme di Erding ed esplorate la vicina Norimberga." },
+                en: { nome: "Munich", desc: "Discover the Town Hall carillon in Marienplatz, relax in the prestigious Erding Thermal Baths, and explore nearby Nuremberg." },
+                fr: { nome: "Munich", desc: "Découvrez le carillon de l'hôtel de ville sur la Marienplatz, détendez-vous dans les prestigieux thermes d'Erding et explorez Nuremberg toute proche." }
+            },
+            {
+                luogo: "monaco",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Monaco di Baviera", desc: "Visitate il magico museo del giocattolo, attraversate il tunnel degli squali al Sea Life e divertitevi sugli scivoli d'acqua giganti." },
+                en: { nome: "Munich", desc: "Visit the magical toy museum, walk through the shark tunnel at Sea Life, and have fun on the giant water slides." },
+                fr: { nome: "Munich", desc: "Visitez le musée magique du jouet, traversez le tunnel des requins au Sea Life et amusez-vous sur les toboggans géants." }
+            },
+            {
+                luogo: "monaco",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Monaco di Baviera", desc: "Mangiate un burger all'iconico Hard Rock Cafe, bevete cocktail galleggiando nelle piscine e perdetevi nella cultura underground del Bahnwärter Thiel." },
+                en: { nome: "Munich", desc: "Eat a burger at the iconic Hard Rock Cafe, drink cocktails floating in the pools, and lose yourself in the underground culture of Bahnwärter Thiel." },
+                fr: { nome: "Munich", desc: "Mangez un burger à l'emblématique Hard Rock Cafe, buvez des cocktails en flottant dans les piscines et perdez-vous dans la culture underground du Bahnwärter Thiel." }
+            },
+
+            // 15) CRACOVIA
+            {
+                luogo: "cracovia",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Cracovia", desc: "Ammirate la collina reale del Wawel, esplorate le straordinarie cattedrali di sale sotterranee e rilassatevi nelle splendide sorgenti termali." },
+                en: { nome: "Krakow", desc: "Admire the royal Wawel hill, explore the extraordinary underground salt cathedrals, and relax in the beautiful thermal springs." },
+                fr: { nome: "Cracovie", desc: "Admirez la colline royale de Wawel, explorez les extraordinaires cathédrales de sel souterraines et détendez-vous dans les magnifiques sources thermales." }
+            },
+            {
+                luogo: "cracovia",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Cracovia", desc: "Guardate il drago che sputa fuoco dalla Vistola, tuffatevi nelle piscine di palline rosa e giocate a centinaia di flipper vintage." },
+                en: { nome: "Krakow", desc: "Watch the fire-breathing dragon from the Vistula, dive into the pink ball pits, and play hundreds of vintage pinball machines." },
+                fr: { nome: "Cracovie", desc: "Regardez le dragon cracheur de feu depuis la Vistule, plongez dans les piscines à balles roses et jouez à des centaines de flippers vintage." }
+            },
+            {
+                luogo: "cracovia",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Cracovia", desc: "Gusta la celebre baguette polacca, impara a distinguere la vodka tradizionale ed emozionati con i concerti di Chopin a lume di candela." },
+                en: { nome: "Krakow", desc: "Taste the famous Polish baguette, learn to distinguish traditional vodka, and be moved by Chopin concerts by candlelight." },
+                fr: { nome: "Cracovie", desc: "Goûtez à la célèbre baguette polonaise, apprenez à distinguer la vodka traditionnelle et laissez-vous émouvoir par les concerts de Chopin à la lueur des bougies." }
+            },
+
+            // 16) TOKYO
+            {
+                luogo: "tokyo",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Tokyo", desc: "Passeggiate tra i templi storici di Asakusa, assistete a un elettrizzante torneo di Sumo e cenate navigando sotto i ciliegi illuminati." },
+                en: { nome: "Tokyo", desc: "Stroll among the historic temples of Asakusa, attend an electrifying Sumo tournament, and dine sailing under the illuminated cherry blossoms." },
+                fr: { nome: "Tokyo", desc: "Promenez-vous parmi les temples historiques d'Asakusa, assistez à un tournoi de Sumo électrisant et dînez en naviguant sous les cerisiers illuminés." }
+            },
+            {
+                luogo: "tokyo",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Tokyo", desc: "Camminate nell'acqua tra pesci digitali al teamLab, esplorate la magia unica di Disneyland e scoprite la moda estrema di Takeshita Street." },
+                en: { nome: "Tokyo", desc: "Walk in the water among digital fish at teamLab, explore the unique magic of Disneyland, and discover the extreme fashion of Takeshita Street." },
+                fr: { nome: "Tokyo", desc: "Marchez dans l'eau parmi les poissons numériques au teamLab, explorez la magie unique de Disneyland et découvrez la mode extrême de Takeshita Street." }
+            },
+            {
+                luogo: "tokyo",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Tokyo", desc: "Sfrecciate in go-kart per le strade di Shibuya, imparate a maneggiare una vera Katana da samurai ed esplorate i micro-bar notturni di Shinjuku." },
+                en: { nome: "Tokyo", desc: "Zip around in go-karts through the streets of Shibuya, learn to handle a real samurai Katana, and explore the nocturnal micro-bars of Shinjuku." },
+                fr: { nome: "Tokyo", desc: "Foncez en karts dans les rues de Shibuya, apprenez à manier un véritable Katana de samouraï et explorez les micro-bars nocturnes de Shinjuku." }
+            },
+
+            // 17) BERLINO
+            {
+                luogo: "berlino",
+                target: "adulti",
+                tipo: "romantic",
+                it: { nome: "Berlino", desc: "Salite sulla magnifica cupola del Reichstag, scoprite la storia toccante del Muro e godetevi un paradiso tropicale indoor." },
+                en: { nome: "Berlin", desc: "Climb the magnificent dome of the Reichstag, discover the touching history of the Wall, and enjoy an indoor tropical paradise." },
+                fr: { nome: "Berlin", desc: "Montez sur la magnifique coupole du Reichstag, découvrez l'histoire touchante du Mur et profitez d'un paradis tropical en salle." }
+            },
+            {
+                luogo: "berlino",
+                target: "famiglia",
+                tipo: "family",
+                it: { nome: "Berlino", desc: "Ammirate la città dall'alto della mongolfiera, dipingete la vostra ceramica personalizzata e correte felici nell'immenso hangar tropicale." },
+                en: { nome: "Berlin", desc: "Admire the city from high up in the hot air balloon, paint your custom ceramics, and run happily in the immense tropical hangar." },
+                fr: { nome: "Berlin", desc: "Admirez la ville d'en haut dans la montgolfière, peignez votre céramique personnalisée et courez joyeusement dans l'immense hangar tropical." }
+            },
+            {
+                luogo: "berlino",
+                target: "giovani",
+                tipo: "fun",
+                it: { nome: "Berlino", desc: "Immergetevi nella storia brutale nel bunker antiaereo, scoprite la cultura urbana dell'ex deposito ferroviario e fate i veri hacker al museo delle spie." },
+                en: { nome: "Berlin", desc: "Immerse yourselves in the brutal history in the anti-aircraft bunker, discover the urban culture of the former railway depot, and play real hackers at the spy museum." },
+                fr: { nome: "Berlin", desc: "Plongez dans l'histoire brutale du bunker antiaérien, découvrez la culture urbaine de l'ancien dépôt ferroviaire et jouez aux vrais hackers au musée des espions." }
+            }
+        ];
+        function filterTrips() {
+            const dest = document.getElementById('destinationInput').value.toLowerCase();
+            const age = document.getElementById('ageRange').value;
+            const activity = document.getElementById('activityType').value;
+            const container = document.getElementById('resultsContainer');
+            const currentLang = document.getElementById('lang-select').value;
+            container.innerHTML = '';
+            const filtered = myDatabase.filter(item => {
+                return (dest === "" || item.luogo.toLowerCase().includes(dest)) && ((age === "" || item.target === age) || (activity === "" || item.tipo === activity));
+            });
+
+            if (filtered.length > 0) {
+                filtered.forEach(item => {
+                    const content = item[currentLang];
+                    const card = `
+                <div class="card" style="background: white; color: #333;">
+                    <h3>${content.nome}</h3>
+                    <p>${content.desc}</p>
+                    <a href="#${item.pag_sit}" class="a_go">Go</a>
+                </div>
+            `;
+                    container.innerHTML += card;
+                });
+            } else {
+                const noResults = {
+                    it: "Nessun risultato trovato.",
+                    en: "No results found.",
+                    fr: "Aucun résultat trouvé."
+                };
+                container.innerHTML = `<p style="color:white">${noResults[currentLang]}</p>`;
+            }
+        }
+        function apriMenu() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function chiudiMenu() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+
+        function funzioneUno() {
+            document.getElementById('main').style.backgroundColor = "#e0f7fa";
+        }
+
+        function funzioneDue() {
+            alert("Hai premuto la seconda funzione nel sottomenu!");
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="tit_box">
+            <img src="Head.png" class="tit_img">
+            <h1 class="tit">
+                <span class="lang-it">Skyline Travel</span>
+                <span class="lang-en">Skyline Travel</span>
+                <span class="lang-fr">Skyline Travel</span>
+            </h1>
+            <div id="main">
+                <button class="open-btn" onclick="apriMenu()">&#9776;</button>
+            </div>
+            <div class="nav_box">
+                <nav class="navigation">
+                    <div id="mySidenav" class="sidenav">
+                        <a href="javascript:void(0)" class="closebtn" onclick="chiudiMenu()">&times;</a>
+
+                        <a href="index.html">Home</a>
+                        <a href="#Mete_imp">
+                            <span class="lang-it">Mete imperdibili</span>
+                            <span class="lang-en">Essential landmarks</span>
+                            <span class="lang-fr">Étapes indispensables</span>
+                        </a>
+                        <a href="#itinerari">
+                            <span class="lang-it">Itinerari</span>
+                            <span class="lang-en">Itinerari</span>
+                            <span class="lang-fr">Itinéraire</span>
+                        </a>
+                        <a href="#Contatti">
+                            <span class="lang-it">Contatti</span>
+                            <span class="lang-en">Contacts</span>
+                            <span class="lang-fr">Contacts</span>
+                        </a>
+
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <center>
+        <div class="Separatori"></div>
+    </center>
+    <main>
+        <div class="travel-settings-bar">
+            <div class="setting-item">
+                <span id="lang-icon" class="icon">🇮🇹</span>
+                <select id="lang-select" onchange="updateSettings('lang')">
+                    <option value="it" data-flag="🇮🇹">ITA</option>
+                    <option value="en" data-flag="🇬🇧">ENG</option>
+                    <option value="fr" data-flag="🇫🇷">FRA</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <span id="curr-icon" class="icon">€</span>
+                <select id="curr-select" onchange="updateSettings('curr')">
+                    <option value="€">EUR</option>
+                    <option value="$">USD</option>
+                    <option value="£">GBP</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <span id="temp-icon" class="icon">°C</span>
+                <select id="temp-select" onchange="updateSettings('temp')">
+                    <option value="°C">°C</option>
+                    <option value="°F">°F</option>
+                </select>
+            </div>
+        </div>
+        <div class="Main_box">
+            <div class="travel-planner">
+                <h2 class="tit_planner">
+                    <span class="lang-it">Pianifica il tuo Viaggio</span>
+                    <span class="lang-en">Plan your Trip</span>
+                    <span class="lang-fr">Planifiez votre Voyage</span>
+                </h2>
+                <div class="search-box">
+                    <input type="text" id="destinationInput" placeholder="Destinazione">
+                    <input type="number" id="peopleInput" placeholder="Persone">
+                    <select id="ageRange">
+                        <option value="" data-it="Fascia d'età" data-en="Age Range" data-fr="Tranche d'âge">Fascia d'età
+                        </option>
+                        <option value="famiglia" data-it="Famiglia con bambini" data-en="Family with children"
+                            data-fr="Famille con enfants">Famiglia con bambini</option>
+                        <option value="giovani" data-it="Gruppo giovani" data-en="Youth group" data-fr="Groupe jeunes">
+                            Gruppo giovani</option>
+                        <option value="adulti" data-it="Adulti/Senior" data-en="Adults/Seniors"
+                            data-fr="Adultes/Seniors">Adulti/Senior</option>
+                    </select>
+
+                    <select id="activityType">
+                        <option value="" data-it="Cosa preferite fare?" data-en="What do you prefer?"
+                            data-fr="Que préférez-vous?">Cosa preferite fare?</option>
+                        <option value="family" data-it="Stare in famiglia" data-en="Staying with family"
+                            data-fr="Être en famille">Stare in famiglia</option>
+                        <option value="fun" data-it="Divertimento e sport" data-en="Fun and sports"
+                            data-fr="Divertissement et sports">Divertimento e sport</option>
+                        <option value="romantic" data-it="Viaggio romantico" data-en="Romantic trip"
+                            data-fr="Voyage romantique">Viaggio romantico</option>
+                    </select>
+
+                    <button onclick="filterTrips()">
+                        <span class="lang-it">Cerca</span>
+                        <span class="lang-en">Search</span>
+                        <span class="lang-fr">Chercher</span>
+                    </button>
+                </div>
+                <div id="resultsContainer" class="results-grid"></div>
+            </div>
+            <center>
+                <div class="Separatori"></div>
+            </center>
+            <div class="topluog_box" id="Mete_imp">
+                <h2 class="tit_topluog">
+                    <span class="lang-it">Mete imperdibili</span>
+                    <span class="lang-en">Essential landmarks</span>
+                    <span class="lang-fr">Étapes indispensables</span>
+                </h2>
+                <div class="topluog_boxes">
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Parigi</span>
+                            <span class="lang-en">Paris</span>
+                            <span class="lang-fr">Paris</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Sainte-Chapelle - L'emozione visiva</span>
+                                <span class="lang-en">Sainte-Chapelle - Visual emotion</span>
+                                <span class="lang-fr">Sainte-Chapelle - L'émotion visuelle</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Quartieri di Montmartre - L'anima romantica</span>
+                                <span class="lang-en">Montmartre Districts - The romantic soul</span>
+                                <span class="lang-fr">Quartiers de Montmartre - L'âme romantique</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Seine River Sightseeing Evening - Il finale perfetto</span>
+                                <span class="lang-en">Seine River Sightseeing Evening - The perfect finale</span>
+                                <span class="lang-fr">Croisière sur la Seine en soirée - Le final parfait</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Disneyland Paris - La magia pura</span>
+                                <span class="lang-en">Disneyland Paris - Pure magic</span>
+                                <span class="lang-fr">Disneyland Paris - La magie pure</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Macaron Baking Class for Families and Kids - Mani in pasta</span>
+                                <span class="lang-en">Macaron Baking Class for Families and Kids - Hands-on
+                                    experience</span>
+                                <span class="lang-fr">Cours de pâtisserie de macarons pour familles et enfants - La main
+                                    à la pâte</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Cité Immersive des Fables - Storia e Gioco</span>
+                                <span class="lang-en">Cité Immersive des Fables - History and Play</span>
+                                <span class="lang-fr">Cité Immersive des Fables - Histoire et Jeu</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Spettacolo di suoni e luci LUMINISCENCE - L'esperienza
+                                    "Mind-Blowing"</span>
+                                <span class="lang-en">LUMINISCENCE Sound and Light Show - The "Mind-Blowing"
+                                    experience</span>
+                                <span class="lang-fr">Spectacle son et lumière LUMINISCENCE - L'expérience
+                                    "époustouflante"</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Disneyland Paris - Il ritorno all'infanzia... con
+                                    l'adrenalina</span>
+                                <span class="lang-en">Disneyland Paris - Return to childhood... with adrenaline</span>
+                                <span class="lang-fr">Disneyland Paris - Le retour en enfance... avec
+                                    l'adrénaline</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Seine River Sightseeing Evening - Vibrazioni serali e City
+                                    Lights</span>
+                                <span class="lang-en">Seine River Sightseeing Evening - Evening vibes and City
+                                    Lights</span>
+                                <span class="lang-fr">Croisière sur la Seine en soirée - Vibrations nocturnes et City
+                                    Lights</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Barcellona</span>
+                            <span class="lang-en">Barcelona</span>
+                            <span class="lang-fr">Barcelone</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Sagrada Família - L'estasi della luce</span>
+                                <span class="lang-en">Sagrada Família - The ecstasy of light</span>
+                                <span class="lang-fr">Sagrada Família - L'extase de la lumière</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Spettacolo di Teatro Flamenco - Passione pura</span>
+                                <span class="lang-en">Flamenco Theater Show - Pure passion</span>
+                                <span class="lang-fr">Spectacle de théâtre Flamenco - Passion pure</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Tour di Montserrat - Fuga romantica fuori porta</span>
+                                <span class="lang-en">Montserrat Tour - Romantic getaway</span>
+                                <span class="lang-fr">Tour de Montserrat - Escapade romantique</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Parco divertimenti Tibidabo - Divertimento con vista</span>
+                                <span class="lang-en">Tibidabo Amusement Park - Fun with a view</span>
+                                <span class="lang-fr">Parc d'attractions Tibidabo - S'amuser avec vue</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">FC Barcelona Museum "Barça Immersive Tour" - Passione e
+                                    Tecnologia</span>
+                                <span class="lang-en">FC Barcelona Museum "Barça Immersive Tour" - Passion and
+                                    Technology</span>
+                                <span class="lang-fr">Musée du FC Barcelone "Barça Immersive Tour" - Passion et
+                                    Technologie</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Laboratorio guidato di mosaico "Trencadís" di Gaudí - Mani in
+                                    pasta</span>
+                                <span class="lang-en">Gaudí's "Trencadís" guided mosaic workshop - Hands-on
+                                    experience</span>
+                                <span class="lang-fr">Atelier guidé de mosaïque "Trencadís" de Gaudí - La main à la
+                                    pâte</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Crociera in catamarano al tramonto - Vibrazioni e Musica</span>
+                                <span class="lang-en">Sunset Catamaran Cruise - Vibes and Music</span>
+                                <span class="lang-fr">Croisière en catamaran au coucher du soleil - Vibrations et
+                                    Musique</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Lezione di Salsa - Socialità e Ritmo</span>
+                                <span class="lang-en">Salsa Lesson - Socializing and Rhythm</span>
+                                <span class="lang-fr">Cours de Salsa - Socialisation et Rythme</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Parc Güell - L'icona "Instagrammabile"</span>
+                                <span class="lang-en">Parc Güell - The "Instagrammable" icon</span>
+                                <span class="lang-fr">Parc Güell - L'icône "Instagrammable"</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Praga</span>
+                            <span class="lang-en">Prague</span>
+                            <span class="lang-fr">Prague</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Bernard Beer Spa - Relax e complicità</span>
+                                <span class="lang-en">Bernard Beer Spa - Relaxation and complicity</span>
+                                <span class="lang-fr">Spa à la bière Bernard - Détente et complicité</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Cena Medievale - Atmosfera e spettacolo</span>
+                                <span class="lang-en">Medieval Dinner - Atmosphere and show</span>
+                                <span class="lang-fr">Dîner médiéval - Atmosphère et spectacle</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Museo delle Illusioni - Divertimento e foto ricordo</span>
+                                <span class="lang-en">Museum of Illusions - Fun and souvenir photos</span>
+                                <span class="lang-fr">Musée des illusions - Fun et photos souvenirs</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Zoo di Praga - Una giornata nella natura</span>
+                                <span class="lang-en">Prague Zoo - A day in nature</span>
+                                <span class="lang-fr">Zoo de Prague - Une journée en pleine nature</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Laboratorio di preparazione della "Torta a Camino" - Mani in
+                                    pasta</span>
+                                <span class="lang-en">"Chimney Cake" baking workshop - Hands-on experience</span>
+                                <span class="lang-fr">Atelier de préparation du "Gâteau Cheminée" - La main à la
+                                    pâte</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Museo delle Illusioni Fantastiche - Foto e divertimento</span>
+                                <span class="lang-en">Museum of Fantastic Illusions - Photos and fun</span>
+                                <span class="lang-fr">Musée des illusions fantastiques - Photos et fun</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Esperienza Pilsner Urquell - The Beer Experience</span>
+                                <span class="lang-en">Pilsner Urquell Experience - The Beer Experience</span>
+                                <span class="lang-fr">Expérience Pilsner Urquell - L'expérience de la bière</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">WOW Show Black Light Theater - Effetti WOW e Social</span>
+                                <span class="lang-en">WOW Show Black Light Theater - WOW effects and Social</span>
+                                <span class="lang-fr">WOW Show Black Light Theater - Effets WOW et Médias Sociaux</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Ice Pub - Un drink a -7°C</span>
+                                <span class="lang-en">Ice Pub - A drink at -7°C</span>
+                                <span class="lang-fr">Ice Pub - Un verre à -7°C</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <div class="topluog_boxes">
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Valencia</span>
+                            <span class="lang-en">Valencia</span>
+                            <span class="lang-fr">Valence</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Visita alla chiesa di San Nicola di Bari e San
+                                    Pietro Martire</span>
+                                <span class="lang-en">Visit to the Church of San Nicolás de Bari and San
+                                    Pedro Mártir</span>
+                                <span class="lang-fr">Visite de l'église Saint-Nicolas-de-Bari et
+                                    Saint-Pierre-Martyr</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Crociera in catamarano dal Porto di
+                                    Valencia</span>
+                                <span class="lang-en">Catamaran cruise from the Port of Valencia</span>
+                                <span class="lang-fr">Croisière en catamaran au départ du port de
+                                    Valence</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Spettacolo di Flamenco al Palosanto Tablao
+                                    Flamenco</span>
+                                <span class="lang-en">Flamenco show at Palosanto Tablao Flamenco</span>
+                                <span class="lang-fr">Spectacle de flamenco au Palosanto Tablao
+                                    Flamenco</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Visita all'Oceanogràfic(città delle arti e delle
+                                    scienze)</span>
+                                <span class="lang-en">Visit to the Oceanogràfic (City of Arts and
+                                    Sciences)</span>
+                                <span class="lang-fr">Visite de l'Oceanogràfic (Cité des arts et des
+                                    sciences)</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Visita al museo del mondo delle illusioni</span>
+                                <span class="lang-en">Visit to the Museum of Illusions</span>
+                                <span class="lang-fr">Visite du musée des illusions</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Ingresso all'Aquopolis Cullera</span>
+                                <span class="lang-en">Admission to Aquopolis Cullera</span>
+                                <span class="lang-fr">Entrée à Aquopolis Cullera</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Esperienza guidata di pub crawl con ingresso ai
+                                    club </span>
+                                <span class="lang-en">Guided pub crawl experience with club entry</span>
+                                <span class="lang-fr">Expérience de tournée des bars guidée avec entrée
+                                    en boîte de nuit</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Crociera al tramonto</span>
+                                <span class="lang-en">Sunset cruise</span>
+                                <span class="lang-fr">Croisière au coucher du soleil</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Escursione a guadalest e ingresso alle cascate
+                                    dell'Algar</span>
+                                <span class="lang-en">Excursion to Guadalest and entrance to the Algar
+                                    waterfalls</span>
+                                <span class="lang-fr">Excursion à Guadalest et entrée aux cascades de
+                                    l'Algar</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Londra</span>
+                            <span class="lang-en">London</span>
+                            <span class="lang-fr">Londres</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Visita all'abbazzia di Westminster e crociera sul
+                                    Tamigi</span>
+                                <span class="lang-en">Visit to Westminster Abbey and Thames river
+                                    cruise</span>
+                                <span class="lang-fr">Visite de l'abbaye de Westminster et croisière sur
+                                    la Tamise</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Tour al castello di Windsor</span>
+                                <span class="lang-en">Tour of Windsor Castle</span>
+                                <span class="lang-fr">Visite du château de Windsor</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Ingresso al london eye al tramonto</span>
+                                <span class="lang-en">London Eye entrance at sunset</span>
+                                <span class="lang-fr">Entrée au London Eye au coucher du soleil</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Spettacolo a teatro de "il Re Leone"(Lyceum
+                                    Theatre)</span>
+                                <span class="lang-en">Theatre show of "The Lion King" (Lyceum
+                                    Theatre)</span>
+                                <span class="lang-fr">Spectacle théâtral « Le Roi Lion » (Lyceum
+                                    Theatre)</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Tour dell'avventura di Shrek</span>
+                                <span class="lang-en">Shrek's Adventure Tour</span>
+                                <span class="lang-fr">Visite de l'aventure de Shrek</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Esperienza dell'orso Paddington</span>
+                                <span class="lang-en">Paddington Bear Experience</span>
+                                <span class="lang-fr">Expérience de l'ours Paddington</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Londra Harry Potter Warner Bros Studio</span>
+                                <span class="lang-en">London Harry Potter Warner Bros Studio</span>
+                                <span class="lang-fr">Studio Warner Bros Harry Potter à Londres</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Visita allo Shard</span>
+                                <span class="lang-en">Visit to The Shard</span>
+                                <span class="lang-fr">Visite du Shard</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Visita al museo Paradox</span>
+                                <span class="lang-en">Visit to the Paradox Museum</span>
+                                <span class="lang-fr">Visite du musée Paradox</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+
+                    <div class="topluog" align="center">
+                        <h3 class="title-city">
+                            <span class="lang-it">Tokyo</span>
+                            <span class="lang-en">Tokyo</span>
+                            <span class="lang-fr">Tokyo</span>
+                        </h3>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia sposata</span>
+                            <span class="lang-en">For married couples</span>
+                            <span class="lang-fr">Pour les couples mariés</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Visita al museo dell'arte Digitale(teamLab)</span>
+                                <span class="lang-en">Visit to the Digital Art Museum (teamLab)</span>
+                                <span class="lang-fr">Visite du musée d'art numérique (teamLab)</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Crociera con spettacolo lungo il percorso dei
+                                    ciliegi</span>
+                                <span class="lang-en">Cruise with a show along the cherry blossom
+                                    route</span>
+                                <span class="lang-fr">Croisière avec spectacle le long de la route des
+                                    cerisiers en fleurs</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Gita a Kamakura ed Enoshima</span>
+                                <span class="lang-en">Trip to Kamakura and Enoshima</span>
+                                <span class="lang-fr">Excursion à Kamakura et Enoshima</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per coppia con figli</span>
+                            <span class="lang-en">For couples with children</span>
+                            <span class="lang-fr">Pour les couples avec enfants</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Tokyo Disneland</span>
+                                <span class="lang-en">Tokyo Disneyland</span>
+                                <span class="lang-fr">Tokyo Disneyland</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Visita al museo d'arte Digitale(teamLab
+                                    Planets)</span>
+                                <span class="lang-en">Visit to the Digital Art Museum (teamLab
+                                    Planets)</span>
+                                <span class="lang-fr">Visite du musée d'art numérique (teamLab
+                                    Planets)</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Art Aquarium Museum</span>
+                                <span class="lang-en">Art Aquarium Museum</span>
+                                <span class="lang-fr">Art Aquarium Museum</span>
+                            </li>
+                        </ul>
+                        </p>
+                        <h4 class="title-category">
+                            <span class="lang-it">Per giovani ragazzi</span>
+                            <span class="lang-en">For youngsters</span>
+                            <span class="lang-fr">Pour les jeunes</span>
+                        </h4>
+                        <p class="container-list">
+                        <ul class="list-activities">
+                            <li class="item-activity">
+                                <span class="lang-it">Tour in Go-Kart per le strade di Tokyo</span>
+                                <span class="lang-en">Go-Kart Tour through the streets of Tokyo</span>
+                                <span class="lang-fr">Visite en Go-Kart dans les rues de Tokyo</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Esperienza da Samurai(lezione di spada)</span>
+                                <span class="lang-en">Samurai Experience (sword lesson)</span>
+                                <span class="lang-fr">Expérience de Samouraï (leçon d'épée)</span>
+                            </li>
+                            <li class="item-activity">
+                                <span class="lang-it">Visita all'Art Aquarium</span>
+                                <span class="lang-en">Visit to the Art Aquarium</span>
+                                <span class="lang-fr">Visite à l'Art Aquarium</span>
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <center>
+                <div class="Separatori"></div>
+            </center>
+            <div class="Mete_box" id="itinerari">
+                <h2 class="tit_Mete">
+                    <span class="lang-it">Le nostre mete già programmate</span>
+                    <span class="lang-en">No ideas? Get inspired</span>
+                    <span class="lang-fr">Vous n'avez aucune idée? Inspirez-vous!</span>
+                </h2>
+
+
+                <section class="city-block">
+                    <h1 class="city-header">
+                        <span class="lang-it">Parigi</span>
+                        <span class="lang-en">Paris</span>
+                        <span class="lang-fr">Paris</span>
+                    </h1>
+
+                    <div class="people-category" id="parigi-marito-moglie">
+                        <h2 class="category-title">
+                            <span class="lang-it">1. Itinerario Marito e Moglie</span>
+                            <span class="lang-en">1. Husband and Wife Itinerary</span>
+                            <span class="lang-fr">1. Itinéraire Mari et Femme</span>
+                        </h2>
+
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 09:30 – 12:30 |</span>
+                                <span class="lang-it">Torre Eiffel: Inizia presto per evitare le code. Salita fino in
+                                    cima per la vista mozzafiato.</span>
+                                <span class="lang-en">Eiffel Tower: Start early to avoid lines. Climb to the top for the
+                                    breathtaking view.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 12:30 – 14:30 |</span>
+                                <span class="lang-it">Pranzo e Libertà: Chioschi degli Champ de Mars o bistrot nel 7°
+                                    arrondissement.</span>
+                                <span class="lang-en">Lunch and Free Time: Kiosks at Champ de Mars or a bistro in the
+                                    7th.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 15:00 – 16:30 |</span>
+                                <span class="lang-it">Crociera sulla Senna: Battelli ai piedi della Torre
+                                    (Bateaux-Parisiens). Un'ora di relax per vedere i monumenti dall'acqua.</span>
+                                <span class="lang-en">Seine Cruise: Boats from the foot of the Tower. An hour of
+                                    relaxation.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | Dalle 17:00 |</span>
+                                <span class="lang-it">Pomeriggio libero: Passeggiata lungo la Senna o relax per vedere
+                                    la Torre illuminarsi.</span>
+                                <span class="lang-en">Free Afternoon: Walk along the Seine or relax to see the Tower
+                                    light up.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | 09:00 – 13:00 |</span>
+                                <span class="lang-it">Museo del Louvre: Entrata dalla Piramide. Focus su Gioconda,
+                                    Venere di Milo e appartamenti di Napoleone III.</span>
+                                <span class="lang-en">Louvre Museum: Pyramid entrance. Focus on major works and Napoleon
+                                    III apartments.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | 13:00 – 15:00 |</span>
+                                <span class="lang-it">Pranzo e Libertà: Jardin des Tuileries per un panino o pasto
+                                    all'aperto.</span>
+                                <span class="lang-en">Lunch and Free Time: Jardin des Tuileries for an outdoor
+                                    meal.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | 15:00 – 18:00 |</span>
+                                <span class="lang-it">Shopping e Jardin des Tuileries: Relax nei giardini o shopping in
+                                    Rue de Rivoli.</span>
+                                <span class="lang-en">Shopping and Tuileries: Relax in the gardens or shopping on Rue de
+                                    Rivoli.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | Sera |</span>
+                                <span class="lang-it">Cena libera in zona Palais Royal.</span>
+                                <span class="lang-en">Free dinner in the Palais Royal area.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 09:30 – 11:30 |</span>
+                                <span class="lang-it">Cattedrale di Notre-Dame: Visita della cattedrale riaperta e del
+                                    suo piazzale.</span>
+                                <span class="lang-en">Notre-Dame Cathedral: Visit the reopened cathedral and its
+                                    square.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 11:30 – 12:30 |</span>
+                                <span class="lang-it">Sainte-Chapelle: Famosa per le vetrate più belle del mondo.</span>
+                                <span class="lang-en">Sainte-Chapelle: Famous for the world's most beautiful stained
+                                    glass.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 12:30 – 14:30 |</span>
+                                <span class="lang-it">Pranzo e Libertà: Esplora l'Île de la Cité o il Quartiere
+                                    Latino.</span>
+                                <span class="lang-en">Lunch and Free Time: Explore Île de la Cité or the Latin
+                                    Quarter.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | Pomeriggio |</span>
+                                <span class="lang-it">Passeggiata tra i librai (bouquinistes) lungo la Senna.</span>
+                                <span class="lang-en">Afternoon: Walk among the booksellers along the Seine.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 10:00 – 13:30 |</span>
+                                <span class="lang-it">Musée d'Orsay: Van Gogh, Monet e Degas in una ex stazione.</span>
+                                <span class="lang-en">Musée d'Orsay: Van Gogh, Monet, and Degas in a former
+                                    station.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 13:30 – 15:30 |</span>
+                                <span class="lang-it">Pranzo e Libertà: Ristorante interno al museo o
+                                    Saint-Germain-des-Prés.</span>
+                                <span class="lang-en">Lunch and Free Time: Internal museum restaurant or
+                                    Saint-Germain-des-Prés.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | Pomeriggio |</span>
+                                <span class="lang-it">Esplorazione del quartiere di Saint-Germain e i suoi caffè storici
+                                    (Café de Flore).</span>
+                                <span class="lang-en">Afternoon: Exploration of Saint-Germain and its historic
+                                    cafes.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 10:00 – 13:00 |</span>
+                                <span class="lang-it">Galeries Lafayette: Shopping e terrazza panoramica gratuita
+                                    sull'Opéra e Torre Eiffel.</span>
+                                <span class="lang-en">Galeries Lafayette: Shopping and free panoramic terrace.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 13:00 – 14:30 |</span>
+                                <span class="lang-it">Pranzo e Libertà: Brasserie eleganti o opzioni gourmet alle
+                                    Galeries.</span>
+                                <span class="lang-en">Lunch and Free Time: Elegant brasseries or gourmet options at
+                                    Galeries.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 15:00 – 18:00 |</span>
+                                <span class="lang-it">Passeggiata Champs-Élysées: Dall'Arco di Trionfo a Place de la
+                                    Concorde.</span>
+                                <span class="lang-en">Champs-Élysées Walk: From Arc de Triomphe to Place de la
+                                    Concorde.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | Sera |</span>
+                                <span class="lang-it">Tempo libero per shopping dell'ultimo minuto o aperitivo.</span>
+                                <span class="lang-en">Evening: Free time for shopping or an aperitif.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | Mattina |</span>
+                                <span class="lang-it">Libertà: Mercato locale (Enfants Rouges) o ritorno in un
+                                    museo.</span>
+                                <span class="lang-en">Morning: Local market or return to a museum.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | Pomeriggio |</span>
+                                <span class="lang-it">Relax ai Giardini del Lussemburgo o visita a Montmartre.</span>
+                                <span class="lang-en">Afternoon: Relax at Luxembourg Gardens or visit Montmartre.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Mattina |</span>
+                                <span class="lang-it">Ultima colazione tipica con croissant in un bistrot.</span>
+                                <span class="lang-en">Morning: Last typical breakfast in a bistro.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | 11:00 – 13:00 |</span>
+                                <span class="lang-it">Libertà: Acquisto souvenir o passeggiata finale nel Marais.</span>
+                                <span class="lang-en">Free Time: Souvenirs or final walk in the Marais.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Pomeriggio |</span>
+                                <span class="lang-it">Fine dell'itinerario e spostamento verso
+                                    aeroporto/stazione.</span>
+                                <span class="lang-en">Afternoon: End of itinerary and transfer.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="people-category" id="parigi-famiglia">
+                        <h2 class="category-title">
+                            <span class="lang-it">2. Itinerario Famiglia</span>
+                            <span class="lang-en">2. Family Itinerary</span>
+                            <span class="lang-fr">2. Itinéraire Famille</span>
+                        </h2>
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 09:30 – 12:30 |</span>
+                                <span class="lang-it">Torre Eiffel: Salita obbligatoria. Un'avventura per i bambini e
+                                    un'emozione per gli adulti.</span>
+                                <span class="lang-en">Eiffel Tower: Mandatory climb. An adventure for kids and a thrill
+                                    for adults.</span>
+                                <span class="lang-fr">Tour Eiffel : Montée obligatoire. Une aventure pour les enfants et
+                                    une émotion pour les adultes.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 13:00 – 15:00 |</span>
+                                <span class="lang-it">Pranzo e Tootbus: Bus Hop-on Hop-off per vedere i viali senza
+                                    stancare i bambini.</span>
+                                <span class="lang-en">Lunch and Tootbus: Hop-on Hop-off bus to see the boulevards
+                                    without tiring the kids.</span>
+                                <span class="lang-fr">Déjeuner et Tootbus : Bus Hop-on Hop-off pour voir les boulevards
+                                    sans fatiguer les enfants.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 15:30 – 17:30 |</span>
+                                <span class="lang-it">Galeries Lafayette: Cupola e terrazza panoramica per i bambini,
+                                    shopping per i genitori.</span>
+                                <span class="lang-en">Galeries Lafayette: Dome and panoramic terrace for kids, shopping
+                                    for parents.</span>
+                                <span class="lang-fr">Galeries Lafayette : Coupole et terrasse panoramique pour les
+                                    enfants, shopping pour les parents.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | Dalle 18:00 |</span>
+                                <span class="lang-it">Tempo Libero: Relax in hotel o cena in una brasserie
+                                    tipica.</span>
+                                <span class="lang-en">Free Time: Relax at the hotel or dinner in a typical
+                                    brasserie.</span>
+                                <span class="lang-fr">Temps libre : Détente à l'hôtel ou dîner dans une brasserie
+                                    typique.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | Tutto il giorno |</span>
+                                <span class="lang-it">Disneyland Paris: Giornata intera dedicata ai parchi.</span>
+                                <span class="lang-en">Disneyland Paris: Full day dedicated to the parks.</span>
+                                <span class="lang-fr">Disneyland Paris : Journée entière dédiée aux parcs.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | Sera |</span>
+                                <span class="lang-it">SEA LIFE Paris: Acquario a Val d'Europe per concludere la
+                                    giornata.</span>
+                                <span class="lang-en">SEA LIFE Paris: Aquarium at Val d'Europe to end the day.</span>
+                                <span class="lang-fr">SEA LIFE Paris : Aquarium à Val d'Europe pour terminer la
+                                    journée.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 10:00 – 12:00 |</span>
+                                <span class="lang-it">Cattedrale di Notre-Dame e Sainte-Chapelle: Le vetrate della
+                                    Sainte-Chapelle incantano tutte le età.</span>
+                                <span class="lang-en">Notre-Dame Cathedral and Sainte-Chapelle: The stained glass of
+                                    Sainte-Chapelle enchants all ages.</span>
+                                <span class="lang-fr">Cathédrale Notre-Dame et Sainte-Chapelle : Les vitraux de la
+                                    Sainte-Chapelle enchantent tous les âges.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 12:30 – 14:30 |</span>
+                                <span class="lang-it">Pranzo nel Quartiere Latino: Zona vivace e piena di opzioni per
+                                    tutti i gusti.</span>
+                                <span class="lang-en">Lunch in the Latin Quarter: Lively area full of options for all
+                                    tastes.</span>
+                                <span class="lang-fr">Déjeuner dans le Quartier Latin : Quartier animé et plein
+                                    d'options per tous les goûts.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 15:00 – 17:00 |</span>
+                                <span class="lang-it">Macaron Baking Class: Attività pratica per imparare a fare il
+                                    dolce simbolo di Parigi.</span>
+                                <span class="lang-en">Macaron Baking Class: Hands-on activity to learn how to make the
+                                    symbolic Parisian sweet.</span>
+                                <span class="lang-fr">Cours de pâtisserie Macarons : Activité pratique pour apprendre à
+                                    cuisiner la douceur symbolique de Paris.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | Dalle 18:00 |</span>
+                                <span class="lang-it">Tempo Libero: Passeggiata lungo la Senna.</span>
+                                <span class="lang-en">Free Time: Walk along the Seine.</span>
+                                <span class="lang-fr">Temps libre : Promenade le long de la Seine.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 09:30 – 12:30 |</span>
+                                <span class="lang-it">Museo del Louvre: Consiglio un tour tematico per famiglie (caccia
+                                    al tesoro) per vedere la Gioconda senza stress.</span>
+                                <span class="lang-en">Louvre Museum: I recommend a family-themed tour (treasure hunt) to
+                                    see the Mona Lisa without stress.</span>
+                                <span class="lang-fr">Musée du Louvre : Je recommande una visite thématique en famille
+                                    (chasse au trésor) pour voir la Joconde sans stress.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 13:00 – 15:00 |</span>
+                                <span class="lang-it">Pranzo ai Giardini delle Tuileries: C'è un'area giochi fantastica
+                                    per i bambini.</span>
+                                <span class="lang-en">Lunch at the Tuileries Garden: There is a fantastic play area for
+                                    children.</span>
+                                <span class="lang-fr">Déjeuner au Jardin des Tuileries : Il y a une aire de jeux
+                                    fantastique pour les enfants.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 15:30 – 17:30 |</span>
+                                <span class="lang-it">Cité Immersive des Fables: Un'esperienza tecnologica e interattiva
+                                    sulle favole di La Fontaine.</span>
+                                <span class="lang-en">Cité Immersive des Fables: A technological and interactive
+                                    experience on La Fontaine's fables.</span>
+                                <span class="lang-fr">Cité Immersive des Fables : Une expérience technologique et
+                                    interactive sur les fables de La Fontaine.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | Sera |</span>
+                                <span class="lang-it">Crociera serale sulla Senna: Per vedere la città illuminata
+                                    dall'acqua.</span>
+                                <span class="lang-en">Evening Seine River Cruise: To see the city illuminated from the
+                                    water.</span>
+                                <span class="lang-fr">Croisière nocturne sur la Seine : Pour voir la ville illuminée
+                                    depuis l'eau.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 10:00 – 14:00 |</span>
+                                <span class="lang-it">Parco Zoologico di Parigi: Una mattinata immersi nella natura in
+                                    uno degli zoo più belli d'Europa.</span>
+                                <span class="lang-en">Paris Zoological Park: A morning immersed in nature in one of
+                                    Europe's most beautiful zoos.</span>
+                                <span class="lang-fr">Parc Zoologique de Paris : Une matinée en pleine nature dans l'un
+                                    des plus beaux zoos d'Europe.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | Pomeriggio |</span>
+                                <span class="lang-it">Esplorare le Catacombe: Un pizzico di mistero e brivido
+                                    (consigliato dai 10 anni in su).</span>
+                                <span class="lang-en">Explore the Catacombs: A touch of mystery and thrill (recommended
+                                    for ages 10 and up).</span>
+                                <span class="lang-fr">Explorer les Catacombes : Un soupçon de mystère et de frisson
+                                    (recommandé à partir de 10 ans).</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | Sera |</span>
+                                <span class="lang-it">Tempo Libero: Spazio dedicato al relax.</span>
+                                <span class="lang-en">Free Time: Time dedicated to relaxation.</span>
+                                <span class="lang-fr">Temps libre : Temps dédié à la détente.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 10:00 – 13:00 |</span>
+                                <span class="lang-it">Musée d’Orsay: L'architettura della vecchia stazione piace molto
+                                    ai bambini; i quadri sono colorati e accessibili.</span>
+                                <span class="lang-en">Musée d’Orsay: Children love the architecture of the old station;
+                                    the paintings are colorful and accessible.</span>
+                                <span class="lang-fr">Musée d’Orsay : L'architecture de l'ancienne gare plaît beaucoup
+                                    aux enfants ; les tableaux sont colorés et accessibles.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 13:30 – 15:00 |</span>
+                                <span class="lang-it">Pranzo a Montmartre: Salita verso la collina per un pasto
+                                    panoramico.</span>
+                                <span class="lang-en">Lunch in Montmartre: Climb up the hill for a panoramic
+                                    meal.</span>
+                                <span class="lang-fr">Déjeuner à Montmartre : Montée vers la colline pour un repas
+                                    panoramique.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 15:00 – 18:00 |</span>
+                                <span class="lang-it">Quartiere di Montmartre: Ritratto in Place du Tertre e visita alla
+                                    Basilica del Sacro Cuore.</span>
+                                <span class="lang-en">Montmartre District: Portrait in Place du Tertre and visit to the
+                                    Sacré-Cœur Basilica.</span>
+                                <span class="lang-fr">Quartier de Montmartre : Portrait sur la Place du Tertre et visite
+                                    de la Basilique du Sacré-Cœur.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Mattina |</span>
+                                <span class="lang-it">Shopping sugli Champs-Élysées: Tempo per gli ultimi regali e foto
+                                    all'Arco di Trionfo.</span>
+                                <span class="lang-en">Shopping on the Champs-Élysées: Time for last gifts and photos at
+                                    the Arc de Triomphe.</span>
+                                <span class="lang-fr">Shopping sur les Champs-Élysées : Temps pour les derniers cadeaux
+                                    et photos à l'Arc de Triomphe.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Pomeriggio |</span>
+                                <span class="lang-it">Relax finale: Ultimo giro sul Tootbus o picnic in un parco prima
+                                    della partenza.</span>
+                                <span class="lang-en">Final relaxation: Last ride on the Tootbus or a picnic in a park
+                                    before departure.</span>
+                                <span class="lang-fr">Détente finale : Dernier tour en Tootbus ou pique-nique dans un
+                                    parc avant le départ.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="people-category" id="parigi-20enni">
+                        <h2 class="category-title">
+                            <span class="lang-it">3. Itinerario 20enni</span>
+                            <span class="lang-en">3. 20s Itinerary</span>
+                            <span class="lang-fr">3. Itinéraire pour les 20 ans</span>
+                        </h2>
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 11:00 – 14:00 |</span>
+                                <span class="lang-it">Torre Eiffel: Il grande classico. Foto immancabili dal Trocadéro e
+                                    salita per vedere Parigi dall'alto.</span>
+                                <span class="lang-en">Eiffel Tower: The great classic. Unmissable photos from Trocadéro
+                                    and climb to see Paris from above.</span>
+                                <span class="lang-fr">Tour Eiffel : Le grand classique. Photos incontournables depuis le
+                                    Trocadéro et montée pour voir Paris d'en haut.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 14:30 – 17:00 |</span>
+                                <span class="lang-it">Passeggiata sugli Champs-Élysées: Esplora i grandi brand, i
+                                    flagship store tecnologici e l'Arco di Trionfo.</span>
+                                <span class="lang-en">Walk on the Champs-Élysées: Explore major brands, tech flagship
+                                    stores, and the Arc de Triomphe.</span>
+                                <span class="lang-fr">Promenade sur les Champs-Élysées : Explorez les grandes marques,
+                                    les flagships technologiques et l'Arc de Triomphe.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 1 | 21:00 – 22:30 |</span>
+                                <span class="lang-it">Crociera sulla Senna (Evening): Luci della città e musica per
+                                    entrare subito nel mood parigino.</span>
+                                <span class="lang-en">Evening Seine Cruise: City lights and music to immediately get
+                                    into the Parisian mood.</span>
+                                <span class="lang-fr">Croisière sur la Seine (Soir) : Lumières de la ville et musique
+                                    pour entrer immédiatement dans l'ambiance parisienne.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | Tutto il giorno |</span>
+                                <span class="lang-it">Disneyland Paris: Giornata dedicata alle attrazioni più
+                                    adrenaliniche come Avengers Assembly e Star Wars Hyperspace Mountain.</span>
+                                <span class="lang-en">Disneyland Paris: Day dedicated to adrenaline attractions like
+                                    Avengers Assembly and Star Wars Hyperspace Mountain.</span>
+                                <span class="lang-fr">Disneyland Paris : Journée dédiée aux attractions à sensations
+                                    comme Avengers Assembly et Star Wars Hyperspace Mountain.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 2 | Sera |</span>
+                                <span class="lang-it">Serata alla Bastille: Zona piena di locali, bar e vita notturna
+                                    perfetta per i ventenni.</span>
+                                <span class="lang-en">Evening at Bastille: Area full of clubs, bars, and nightlife
+                                    perfect for twenty-somethings.</span>
+                                <span class="lang-fr">Soirée à la Bastille : Quartier plein de clubs, de bars et de vie
+                                    nocturne parfait pour les jeunes de vingt ans.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 10:30 – 12:30 |</span>
+                                <span class="lang-it">Catacombe di Parigi: Un'esperienza "dark" e insolita nei
+                                    sotterranei della città.</span>
+                                <span class="lang-en">Catacombs of Paris: A "dark" and unusual experience in the city's
+                                    underground.</span>
+                                <span class="lang-fr">Catacombes de Paris : Une expérience "dark" et insolite dans les
+                                    souterrains de la ville.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 13:00 – 15:00 |</span>
+                                <span class="lang-it">Pranzo nel Marais: Prova il celebre street food (come i falafel) e
+                                    gira per i negozi vintage.</span>
+                                <span class="lang-en">Lunch in the Marais: Try the famous street food (like falafel) and
+                                    browse vintage shops.</span>
+                                <span class="lang-fr">Déjeuner dans le Marais : Goûtez à la célèbre street food (comme
+                                    les falafels) et parcourez les boutiques vintage.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 3 | 15:30 – 18:30 |</span>
+                                <span class="lang-it">Tempo Libero: Shopping creativo o relax in un caffè di
+                                    tendenza.</span>
+                                <span class="lang-en">Free Time: Creative shopping or relaxing in a trendy café.</span>
+                                <span class="lang-fr">Temps libre : Shopping créatif ou détente dans un café
+                                    branché.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 14:00 – 17:30 |</span>
+                                <span class="lang-it">Museo del Louvre: Focus sulle icone (Gioconda, Amore e Psiche) a
+                                    ritmo serrato.</span>
+                                <span class="lang-en">Louvre Museum: Focus on icons (Mona Lisa, Psyche Revived by
+                                    Cupid's Kiss) at a fast pace.</span>
+                                <span class="lang-fr">Musée du Louvre : Focus sur les icônes (La Joconde, Psyché ranimée
+                                    par le baiser de l'Amour) à un rythme soutenu.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 18:00 – 20:00 |</span>
+                                <span class="lang-it">Aperitivo al Canal Saint-Martin: Il punto di ritrovo preferito dai
+                                    giovani parigini per un drink lungo l'acqua.</span>
+                                <span class="lang-en">Aperitif at Canal Saint-Martin: The favorite meeting point for
+                                    young Parisians for a drink by the water.</span>
+                                <span class="lang-fr">Apéro au Canal Saint-Martin : Le point de rencontre préféré des
+                                    jeunes parisiens pour un verre au bord de l'eau.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 4 | 21:30 |</span>
+                                <span class="lang-it">Spettacolo LUMINISCENCE: Un'esperienza digitale immersiva
+                                    all'interno di una chiesa storica.</span>
+                                <span class="lang-en">LUMINISCENCE Show: An immersive digital experience inside a
+                                    historic church.</span>
+                                <span class="lang-fr">Spectacle LUMINISCENCE : Une expérience numérique immersive à
+                                    l'intérieur d'une église historique.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 11:00 – 15:00 |</span>
+                                <span class="lang-it">Montmartre: Passeggiata tra i vicoli degli artisti, il Muro dei
+                                    "Ti Amo" e vista panoramica dal Sacro Cuore.</span>
+                                <span class="lang-en">Montmartre: Walk through artists' alleys, the "I Love You" Wall,
+                                    and panoramic view from Sacré-Cœur.</span>
+                                <span class="lang-fr">Montmartre : Promenade dans les ruelles des artistes, le Mur des
+                                    "Je t'aime" et vue panoramique depuis le Sacré-Cœur.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | 16:00 – 18:00 |</span>
+                                <span class="lang-it">Galeries Lafayette: Selfie sulla terrazza panoramica gratuita e
+                                    visita alla cupola.</span>
+                                <span class="lang-en">Galeries Lafayette: Selfie on the free panoramic terrace and visit
+                                    to the dome.</span>
+                                <span class="lang-fr">Galeries Lafayette : Selfie sur la terrasse panoramique gratuite
+                                    et visite de la coupole.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 5 | Serata |</span>
+                                <span class="lang-it">Pigalle: Scopri il lato moderno e cool della zona, tra cocktail
+                                    bar e club storici.</span>
+                                <span class="lang-en">Pigalle: Discover the modern and cool side of the area, between
+                                    cocktail bars and historic clubs.</span>
+                                <span class="lang-fr">Pigalle : Découvrez le côté moderne et cool du quartier, entre
+                                    bars à cocktails et clubs historiques.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 10:30 – 13:30 |</span>
+                                <span class="lang-it">Musée d’Orsay: L'arte degli impressionisti in una ex stazione
+                                    ferroviaria spettacolare. Più compatto del Louvre e perfetto per i giovani.</span>
+                                <span class="lang-en">Musée d’Orsay: Impressionist art in a spectacular former railway
+                                    station. More compact than the Louvre and perfect for young people.</span>
+                                <span class="lang-fr">Musée d’Orsay : L'art impressionniste dans une ancienne gare
+                                    ferroviaire spectaculaire. Plus compact que le Louvre et parfait pour les
+                                    jeunes.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 13:30 – 15:00 |</span>
+                                <span class="lang-it">Pranzo a Saint-Germain-des-Prés: Fermatevi in una brasserie
+                                    storica o cercate un posto di tendenza nel quartiere degli intellettuali.</span>
+                                <span class="lang-en">Lunch in Saint-Germain-des-Prés: Stop at a historic brasserie or
+                                    find a trendy spot in the intellectuals' quarter.</span>
+                                <span class="lang-fr">Déjeuner à Saint-Germain-des-Prés : Arrêtez-vous dans une
+                                    brasserie historique ou trouvez un endroit branché dans le quartier des
+                                    intellectuels.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | 15:30 – 18:30 |</span>
+                                <span class="lang-it">Relax al Jardin du Luxembourg: Pomeriggio di libertà nei giardini
+                                    più belli della città. Ideale per un picnic o per leggere un libro.</span>
+                                <span class="lang-en">Relax at Jardin du Luxembourg: Afternoon of freedom in the city's
+                                    most beautiful gardens. Ideal for a picnic or reading a book.</span>
+                                <span class="lang-fr">Détente au Jardin du Luxembourg : Après-midi de liberté dans les
+                                    plus beaux jardins de la ville. Idéal pour un pique-nique ou lire un livre.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 6 | Sera |</span>
+                                <span class="lang-it">Serata nel Quartiere Latino: Esplora i bar universitari e i locali
+                                    storici tra i vicoli medievali.</span>
+                                <span class="lang-en">Evening in the Latin Quarter: Explore university bars and historic
+                                    spots among the medieval alleys.</span>
+                                <span class="lang-fr">Soirée dans le Quartier Latin : Explorez les bars universitaires
+                                    et les lieux historiques parmi les ruelles médiévales.</span>
+                            </li>
+
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Mattina |</span>
+                                <span class="lang-it">Brunch a Saint-Germain: Ultima colazione parigina in un caffè
+                                    storico o moderno del quartiere.</span>
+                                <span class="lang-en">Brunch in Saint-Germain: Last Parisian breakfast in a historic or
+                                    modern café in the neighborhood.</span>
+                                <span class="lang-fr">Brunch à Saint-Germain : Dernier petit-déjeuner parisien dans un
+                                    café historique ou moderne du quartier.</span>
+                            </li>
+                            <li class="activity-item">
+                                <span class="day-slot">Giorno 7 | Pomeriggio |</span>
+                                <span class="lang-it">Tempo Libero: Ultime foto, souvenir o una visita veloce alla
+                                    Sainte-Chapelle prima della partenza.</span>
+                                <span class="lang-en">Free Time: Last photos, souvenirs, or a quick visit to
+                                    Sainte-Chapelle before departure.</span>
+                                <span class="lang-fr">Temps libre : Dernières photos, souvenirs ou une visite rapide à
+                                    la Sainte-Chapelle avant le départ.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+
+
+                <section class="city-block">
+                    <h1 class="city-header">
+                        <span class="lang-it">Barcellona</span>
+                        <span class="lang-en">Barcelona</span>
+                        <span class="lang-fr">Barcelone</span>
+                    </h1>
+
+
+
+                </section>
+
+
+
+            </div>
+            <br>
+        </div>
+    </main>
+    <center>
+        <div class="Separatori"></div>
+    </center>
+    <footer class="futer" id="Contatti">
+        <div class="authors">
+            <p>Created by:</p>
+            <p>Brasolin Nick</p>
+            <p>Corsico Nicolò</p>
+            <p>Metali Yassin</p>
+            <p>Quispe Fabrizio</p>
+            <p>Tounsaoui Sofian</p>
+        </div>
+        <div class="mails">
+            <p>E-Mails:</p>
+            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=n.brasolin22@caramuelroncalli.it&su=Richiesta+Informazioni"
+                    target="_blank" class="btn-email">
+                    n.brasolin22@caramuelroncalli.it
+                </a></p>
+            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=n.corsico22@caramuelroncalli.it&su=Richiesta+Informazioni"
+                    target="_blank" class="btn-email">
+                    n.corsico22@caramuelroncalli.it
+                </a></p>
+            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=y.metali22@caramuelroncalli.it&su=Richiesta+Informazioni"
+                    target="_blank" class="btn-email">
+                    y.metali22@caramuelroncalli.it
+                </a></p>
+            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=f.quispecandia22@caramuelroncalli.it&su=Richiesta+Informazioni"
+                    target="_blank" class="btn-email">
+                    f.quispecandia22@caramuelroncalli.it
+                </a></p>
+            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=s.tounsaoui22@caramuelroncalli.it&su=Richiesta+Informazioni"
+                    target="_blank" class="btn-email">
+                    s.tounsaoui22@caramuelroncalli.it
+                </a></p>
+        </div>
+        <div class="numbs">
+            <p>Numbers:</p>
+            <p>+39 327 446 8190</p>
+            <p>+39 351 558 2370</p>
+            <p>+39 351 333 2631</p>
+            <p>+39 351 759 0885</p>
+            <p>+39 351 280 8713</p>
+        </div>
+        <img class="fut_img" src="Head.png">
+    </footer>
+</body>
+
+</html>
